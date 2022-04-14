@@ -27,5 +27,9 @@ public:
 	void EliminarAristasDestino(string dest); // Elimina las aristas que tienen como destino el vertice especificado
 	void RecorridoAnchura(string origen); // Recorre el grafo con el algoritmo de anchura
 	void RecorridoProfundidad(string origen); // Recorre el grafo con el algoritmo de profundidad
+	void PrimeroEnAnchura(string origen, string destino); // Despliega la ruta entre los dos vertices especificados con el algoritmo de primero en anchura
+	void PrimeroEnProfundidad(string origen, string destino); // Despliega la ruta entre los dos vertices especificados con el algoritmo de primero en profundidad
+	void PrimeroElMejor(string origen, string destino); // Despliega la ruta entre los dos vertices especificados con el algoritmo de primero el mejor
+	void MostrarRutaEncontrada(stack<pair<Vertice*, Vertice*>> pilaPar, Vertice* vdest); // Despliega la ruta encontrada
 };
 

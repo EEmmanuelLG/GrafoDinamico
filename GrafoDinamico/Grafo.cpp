@@ -346,3 +346,229 @@ void Grafo::RecorridoProfundidad(string origen)
 	else
 		cout << "El vertice especificado no existe" << endl;
 }
+
+
+void Grafo::PrimeroEnAnchura(string origen, string destino)
+{
+	Vertice* vori = ObtenerVertice(origen);
+	Vertice* vdest = ObtenerVertice(destino);
+
+	if (vori == NULL)
+		cout << "El vertice origen no existe" << endl;
+
+	if (vdest == NULL)
+		cout << "El vertice destino no existe" << endl;
+
+	if (vori != NULL && vdest != NULL)
+	{
+		queue<Vertice*> cola;
+		stack<pair<Vertice*, Vertice*>> pilaPar;
+		list<Vertice*> visitados;
+		bool rutaEncontrada = false;
+		cola.push(vori);
+
+		while (!cola.empty())
+		{
+			Vertice* vActual = cola.front();
+			cola.pop();
+
+			list<Vertice*>::iterator iter = find(visitados.begin(), visitados.end(), vActual);
+
+			if (iter == visitados.end())
+			{
+				if (vActual == vdest)
+				{
+					rutaEncontrada = true;
+					MostrarRutaEncontrada(pilaPar, vdest);
+					break;
+				}
+
+				visitados.push_back(vActual);
+				Arista* i = vActual->ari;
+
+				while (i != NULL)
+				{
+					Vertice* dest = i->dest;
+					iter = find(visitados.begin(), visitados.end(), dest);
+
+					if (iter == visitados.end())
+					{
+						cola.push(dest);
+						pair<Vertice*, Vertice*> par;
+						par.first = vActual;
+						par.second = dest;
+						pilaPar.push(par);
+					}
+
+					i = i->sig;
+				}
+			}
+		}
+
+		if (!rutaEncontrada)
+			cout << "No existe una ruta entre esos dos vertices" << endl;
+	}
+}
+
+void Grafo::PrimeroEnProfundidad(string origen, string destino)
+{
+	Vertice* vori = ObtenerVertice(origen);
+	Vertice* vdest = ObtenerVertice(destino);
+
+	if (vori == NULL)
+		cout << "El vertice origen no existe" << endl;
+
+	if (vdest == NULL)
+		cout << "El vertice destino no existe" << endl;
+
+	if (vori != NULL && vdest != NULL)
+	{
+		stack<Vertice*> pila;
+		stack<pair<Vertice*, Vertice*>> pilaPar;
+		list<Vertice*> visitados;
+		bool rutaEncontrada = false;
+		pila.push(vori);
+
+		while (!pila.empty())
+		{
+			Vertice* vActual = pila.top();
+			pila.pop();
+
+			list<Vertice*>::iterator iter = find(visitados.begin(), visitados.end(), vActual);
+
+			if (iter == visitados.end())
+			{
+				if (vActual == vdest)
+				{
+					rutaEncontrada = true;
+					MostrarRutaEncontrada(pilaPar, vdest);
+					break;
+				}
+
+				visitados.push_back(vActual);
+				Arista* i = vActual->ari;
+
+				while (i != NULL)
+				{
+					Vertice* dest = i->dest;
+					iter = find(visitados.begin(), visitados.end(), dest);
+
+					if (iter == visitados.end())
+					{
+						pila.push(dest);
+						pair<Vertice*, Vertice*> par;
+						par.first = vActual;
+						par.second = dest;
+						pilaPar.push(par);
+					}
+
+					i = i->sig;
+				}
+			}
+		}
+
+		if (!rutaEncontrada)
+			cout << "No existe una ruta entre esos dos vertices" << endl;
+	}
+}
+
+bool OrderPorCosto(const pair<Vertice*, int>& a, const pair<Vertice*, int>& b)
+{
+	return a.second < b.second;
+}
+
+void Grafo::PrimeroElMejor(string origen, string destino)
+{
+	Vertice* vori = ObtenerVertice(origen);
+	Vertice* vdest = ObtenerVertice(destino);
+
+	if (vori == NULL)
+		cout << "El vertice origen no existe" << endl;
+
+	if (vdest == NULL)
+		cout << "El vertice destino no existe" << endl;
+
+	if (vori != NULL && vdest != NULL)
+	{
+		typedef pair<Vertice*, int> parVerInt;
+		typedef pair<Vertice*, Vertice*> parVerVer;
+		list<parVerInt> costos, costosOrd;
+		stack<parVerVer> pilaPar;
+		bool rutaEncontrada = false;
+		parVerInt parVI;
+		parVI.first = vori;
+		parVI.second = 0;
+		costos.push_back(parVI);
+		costosOrd.push_back(parVI);
+
+		while (!costosOrd.empty())
+		{
+			Vertice* vActual = costosOrd.front().first;
+			int costoActual = costosOrd.front().second;
+			costosOrd.pop_front();
+
+			if (vActual == vdest)
+			{
+				rutaEncontrada = true;
+				MostrarRutaEncontrada(pilaPar, vdest);
+				break;
+			}
+
+			Arista* i = vActual->ari;
+
+			while (i != NULL)
+			{
+				Vertice* dest = i->dest;
+				costoActual += i->precio;
+
+				list<parVerInt>::iterator iter = find_if(costos.begin(), costos.end(), [&](const parVerInt& par) { return par.first == dest; });
+
+				if (iter == costos.end())
+				{
+					parVI.first = dest;
+					parVI.second = costoActual;
+					costos.push_back(parVI);
+					costosOrd.push_back(parVI);
+					costosOrd.sort(OrderPorCosto);
+					parVerVer parVV;
+					parVV.first = vActual;
+					parVV.second = dest;
+					pilaPar.push(parVV);
+				}
+				else if (costoActual < iter->second)
+				{
+					iter->second = costoActual;
+					iter = find_if(costosOrd.begin(), costosOrd.end(), [&](const parVerInt& par) { return par.first == dest; });
+					iter->second = costoActual;
+					costosOrd.sort(OrderPorCosto);
+					parVerVer parVV;
+					parVV.first = vActual;
+					parVV.second = dest;
+					pilaPar.push(parVV);
+				}
+
+				costoActual -= i->precio;
+				i = i->sig;
+			}
+		}
+
+		if (!rutaEncontrada)
+			cout << "No existe una ruta entre esos dos vertices" << endl;
+	}
+}
+
+void Grafo::MostrarRutaEncontrada(stack<pair<Vertice*, Vertice*>> pilaPar, Vertice* vdest)
+{
+	Vertice* destinoActual = vdest;
+
+	while (!pilaPar.empty())
+	{
+		cout << destinoActual->nombre << "<-";
+
+		while (!pilaPar.empty() && pilaPar.top().second != destinoActual)
+			pilaPar.pop();
+
+		if (!pilaPar.empty())
+			destinoActual = pilaPar.top().first;
+	}
+}

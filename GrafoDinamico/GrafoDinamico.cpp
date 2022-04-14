@@ -35,7 +35,7 @@ int main()
 	grafo->InsertaArista("F", "E", 42);
 	grafo->InsertaArista("G", "D", 17);
 
-	while (opc != 10)
+	while (opc != 13)
 	{
 		system("cls");
 		cout << "1. Insertar vertice" << endl;
@@ -47,7 +47,10 @@ int main()
 		cout << "7. Eliminar todo" << endl;
 		cout << "8. Recorrido en anchura" << endl;
 		cout << "9. Recorrido en profundidad" << endl;
-		cout << "10. Salir" << endl;
+		cout << "10. Primero en anchura" << endl;
+		cout << "11. Primero en profundidad" << endl;
+		cout << "12. Primero el mejor" << endl;
+		cout << "13. Salir" << endl;
 
 		cout << endl;
 		cout << "Ingrese una opcion del menu: ";
@@ -171,6 +174,57 @@ int main()
 				cin >> nombre;
 
 				grafo->RecorridoProfundidad(nombre);
+			}
+
+			break;
+		}
+		case 10:
+		{
+			if (grafo->EstaVacio())
+				cout << "El grafo esta vacio" << endl;
+			else
+			{
+				string ori, dest;
+				cout << "Ingrese el nombre del vertice origen: ";
+				cin >> ori;
+				cout << "Ingrese el nombre del vertice destino: ";
+				cin >> dest;
+
+				grafo->PrimeroEnAnchura(ori, dest);
+			}
+
+			break;
+		}
+		case 11:
+		{
+			if (grafo->EstaVacio())
+				cout << "El grafo esta vacio" << endl;
+			else
+			{
+				string ori, dest;
+				cout << "Ingrese el nombre del vertice origen: ";
+				cin >> ori;
+				cout << "Ingrese el nombre del vertice destino: ";
+				cin >> dest;
+
+				grafo->PrimeroEnProfundidad(ori, dest);
+			}
+
+			break;
+		}
+		case 12:
+		{
+			if (grafo->EstaVacio())
+				cout << "El grafo esta vacio" << endl;
+			else
+			{
+				string ori, dest;
+				cout << "Ingrese el nombre del vertice origen: ";
+				cin >> ori;
+				cout << "Ingrese el nombre del vertice destino: ";
+				cin >> dest;
+
+				grafo->PrimeroElMejor(ori, dest);
 			}
 
 			break;
