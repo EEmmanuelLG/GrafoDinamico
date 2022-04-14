@@ -1,6 +1,9 @@
 #pragma once
 #include "Vertice.h"
 #include "Arista.h"
+#include <queue>
+#include <list>
+#include <stack>
 
 using namespace std;
 
@@ -22,5 +25,7 @@ public:
 	void EliminarTodo(); // Elimina todos los vertices y aristas del grafo
 	void EliminarAristas(Vertice* vertice); // Elimina las aristas del vertice especificado
 	void EliminarAristasDestino(string dest); // Elimina las aristas que tienen como destino el vertice especificado
+	void RecorridoAnchura(string origen); // Recorre el grafo con el algoritmo de anchura
+	void RecorridoProfundidad(string origen); // Recorre el grafo con el algoritmo de profundidad
 };
 

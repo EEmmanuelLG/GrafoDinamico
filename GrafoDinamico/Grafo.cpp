@@ -260,3 +260,89 @@ void Grafo::EliminarTodo()
 		tamano--;
 	}
 }
+
+void Grafo::RecorridoAnchura(string origen)
+{
+	Vertice* vOrigen = ObtenerVertice(origen);
+
+	if (vOrigen != NULL)
+	{
+		cout << "Origen: " << origen << endl;
+		cout << "En anchura: ";
+		queue<Vertice*> cola;
+		list<Vertice*> lista;
+		cola.push(vOrigen);
+
+		while (!cola.empty())
+		{
+			Vertice* vActual = cola.front();
+			cola.pop();
+
+			list<Vertice*>::iterator iter = find(lista.begin(), lista.end(), vActual);
+
+			if (iter == lista.end())
+			{
+				cout << vActual->nombre << ", ";
+				lista.push_back(vActual);
+			}
+
+			Arista* i = vActual->ari;
+
+			while (i != NULL)
+			{
+				Vertice* vDestino = i->dest;
+				iter = find(lista.begin(), lista.end(), vDestino);
+
+				if (iter == lista.end())
+					cola.push(vDestino);
+
+				i = i->sig;
+			}
+		}
+	}
+	else
+		cout << "El vertice especificado no existe" << endl;
+}
+
+void Grafo::RecorridoProfundidad(string origen)
+{
+	Vertice* vOrigen = ObtenerVertice(origen);
+
+	if (vOrigen != NULL)
+	{
+		cout << "Origen: " << origen << endl;
+		cout << "En profundidad: ";
+		stack<Vertice*> pila;
+		list<Vertice*> lista;
+		pila.push(vOrigen);
+
+		while (!pila.empty())
+		{
+			Vertice* vActual = pila.top();
+			pila.pop();
+
+			list<Vertice*>::iterator iter = find(lista.begin(), lista.end(), vActual);
+
+			if (iter == lista.end())
+			{
+				cout << vActual->nombre << ", ";
+				lista.push_back(vActual);
+			}
+
+			Arista* i = vActual->ari;
+
+			while (i != NULL)
+			{
+				Vertice* vDestino = i->dest;
+				iter = find(lista.begin(), lista.end(), vDestino);
+
+				if (iter == lista.end())
+					pila.push(vDestino);
+
+				i = i->sig;
+			}
+		}
+	}
+	else
+		cout << "El vertice especificado no existe" << endl;
+}
