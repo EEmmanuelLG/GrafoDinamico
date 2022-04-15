@@ -78,7 +78,7 @@ void Grafo::InsertaArista(string ori, string dest, int precio)
 
 			while (j->sig != NULL)
 				j = j->sig;
-			
+
 			j->sig = nueva;
 		}
 	}
@@ -92,7 +92,7 @@ void Grafo::MostrarListaAdyacencia()
 	{
 		Arista* j = i->ari;
 		cout << i->nombre << " = ";
-		
+
 		while (j != NULL)
 		{
 			cout << i->nombre << "->" << j->precio << "->" << j->dest->nombre << ",";
@@ -174,7 +174,7 @@ void Grafo::EliminarVertice(string nombre)
 		delete(i);
 		tamano--;
 	}
-	else 
+	else
 	{
 		Vertice* i = primero;
 		Vertice* j = i->sig;
@@ -572,3 +572,103 @@ void Grafo::MostrarRutaEncontrada(stack<pair<Vertice*, Vertice*>> pilaPar, Verti
 			destinoActual = pilaPar.top().first;
 	}
 }
+
+bool CostoMinimo(const pair<Vertice*, int>& a, const pair<Vertice*, int>& b)
+{
+	return a.second < b.second;
+}
+
+void Grafo::Dijkstra(string origen)
+{
+	Vertice* vorigen = ObtenerVertice(origen);
+
+	if (vorigen == NULL)
+		cout << "El vertice origen no existe" << endl;
+	else
+	{
+		map<Vertice*, map<Vertice*, int>> matriz;
+		map<Vertice*, bool> visitados;
+		map<Vertice*, Vertice*> rutas;
+		map<Vertice*, int> cola;
+		map<Vertice*, int> distancias;
+
+		Vertice* vi = primero;
+
+		// Inicializar colecciones de datos
+		while (vi != NULL)
+		{
+			visitados[vi] = false;
+			rutas[vi] = NULL;
+			distancias[vi] = numeric_limits<int>::max();
+
+			Vertice* vj = primero;
+
+			while (vj != NULL)
+			{
+				matriz[vi][vj] = numeric_limits<int>::max();
+				vj = vj->sig;
+			}
+
+			Arista* aj = vi->ari;
+
+			while (aj != NULL)
+			{
+				matriz[vi][aj->dest] = aj->precio;
+				aj = aj->sig;
+			}
+
+			vi = vi->sig;
+		}
+
+		distancias[vorigen] = 0;
+		visitados[vorigen] = true;
+		cola[vorigen] = distancias[vorigen];
+
+		while (!cola.empty())
+		{
+			// Encuentra el vertice con el costo menor en la cola
+			map<Vertice*, int>::iterator iter = min_element(cola.begin(), cola.end(), CostoMinimo);
+			visitados[iter->first] = true;
+
+			// Recorre todos los vertices que tiene como destino
+			Arista* ai = iter->first->ari;
+
+			while (ai != NULL)
+			{
+				if (!visitados[ai->dest])
+				{
+					if (distancias[ai->dest] > distancias[iter->first] + matriz[iter->first][ai->dest])
+					{
+						distancias[ai->dest] = distancias[iter->first] + matriz[iter->first][ai->dest];
+						rutas[ai->dest] = iter->first;
+						cola[ai->dest] = distancias[ai->dest];
+					}
+				}
+
+				ai = ai->sig;
+			}
+
+			cola.erase(iter->first);
+		}
+
+		// Muestra los vertices destino con su respectivo peso total
+		for (map<Vertice*, int>::iterator i = distancias.begin(); i != distancias.end(); i++)
+			cout << i->first->nombre << ": " << i->second << endl;
+
+
+		// Muestra las rutas completas
+		for (map<Vertice*, Vertice*>::iterator i = rutas.begin(); i != rutas.end(); i++)
+		{
+			Vertice* vAct = i->first;
+
+			while (vAct != NULL)
+			{
+				cout << vAct->nombre << " <- ";
+				vAct = rutas[vAct];
+			}
+
+			cout << endl;
+		}
+	}
+}
+

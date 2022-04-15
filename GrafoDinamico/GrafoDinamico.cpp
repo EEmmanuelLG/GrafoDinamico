@@ -35,7 +35,7 @@ int main()
 	grafo->InsertaArista("F", "E", 42);
 	grafo->InsertaArista("G", "D", 17);
 
-	while (opc != 13)
+	while (opc != 14)
 	{
 		system("cls");
 		cout << "1. Insertar vertice" << endl;
@@ -50,7 +50,8 @@ int main()
 		cout << "10. Primero en anchura" << endl;
 		cout << "11. Primero en profundidad" << endl;
 		cout << "12. Primero el mejor" << endl;
-		cout << "13. Salir" << endl;
+		cout << "13. Dijkstra" << endl;
+		cout << "14. Salir" << endl;
 
 		cout << endl;
 		cout << "Ingrese una opcion del menu: ";
@@ -225,6 +226,21 @@ int main()
 				cin >> dest;
 
 				grafo->PrimeroElMejor(ori, dest);
+			}
+
+			break;
+		}
+		case 13:
+		{
+			if (grafo->EstaVacio())
+				cout << "El grafo esta vacio" << endl;
+			else
+			{
+				string ori;
+				cout << "Ingrese el nombre del vertice origen: ";
+				cin >> ori;
+
+				grafo->Dijkstra(ori);
 			}
 
 			break;

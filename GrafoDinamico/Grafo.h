@@ -4,6 +4,7 @@
 #include <queue>
 #include <list>
 #include <stack>
+#include <map>
 
 using namespace std;
 
@@ -31,5 +32,6 @@ public:
 	void PrimeroEnProfundidad(string origen, string destino); // Despliega la ruta entre los dos vertices especificados con el algoritmo de primero en profundidad
 	void PrimeroElMejor(string origen, string destino); // Despliega la ruta entre los dos vertices especificados con el algoritmo de primero el mejor
 	void MostrarRutaEncontrada(stack<pair<Vertice*, Vertice*>> pilaPar, Vertice* vdest); // Despliega la ruta encontrada
+	void Dijkstra(string origen); // Despliega la ruta más corta entre el origen y los demás vertices
 };
 
