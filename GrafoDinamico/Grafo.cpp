@@ -672,3 +672,81 @@ void Grafo::Dijkstra(string origen)
 	}
 }
 
+void Grafo::Kruskal()
+{
+	map<Vertice*, map<Vertice*, int>> matrizady;
+	map<Vertice*, map<Vertice*, int>> matrizsol;
+	map<Vertice*, Vertice*> conectados;
+
+	Vertice* vi = primero;
+
+	while (vi != NULL)
+	{
+		conectados[vi] = vi;
+
+		Vertice* vj = primero;
+
+		while (vj != NULL)
+		{
+			matrizady[vi][vj] = 0;
+			vj = vj->sig;
+		}
+
+		Arista* aj = vi->ari;
+
+		while (aj != NULL)
+		{
+			matrizady[vi][aj->dest] = aj->precio;
+			aj = aj->sig;
+		}
+
+		vi = vi->sig;
+	}
+
+
+	Vertice* vA, * vB;
+	int aristas = 1;
+
+	while (aristas < tamano)
+	{
+		int min = numeric_limits<int>::max();
+
+		for (map<Vertice*, map<Vertice*, int>>::iterator i = matrizady.begin(); i != matrizady.end(); i++)
+		{
+			for (map<Vertice*, int>::iterator j = i->second.begin(); j != i->second.end(); j++)
+			{
+				if (j->second < min && j->second != 0 && conectados[i->first] != conectados[j->first])
+				{
+					min = j->second;
+					vA = i->first;
+					vB = j->first;
+				}
+			}
+		}
+
+		if (conectados[vA] != conectados[vB])
+		{
+			matrizsol[vA][vB] = min;
+
+			Vertice* vTemp = conectados[vB];
+			conectados[vB] = conectados[vA];
+
+			for (map<Vertice*, Vertice*>::iterator i = conectados.begin(); i != conectados.end(); i++)
+			{
+				if (i->second == vTemp)
+					i->second = conectados[vA];
+			}
+
+			aristas++;
+		}
+	}
+
+	for (map<Vertice*, map<Vertice*, int>>::iterator i = matrizsol.begin(); i != matrizsol.end(); i++)
+	{
+		for (map<Vertice*, int>::iterator j = i->second.begin(); j != i->second.end(); j++)
+		{
+			cout << i->first->nombre << " <-> " << j->second << " <-> " << j->first->nombre << endl;
+		}
+	}
+
+}

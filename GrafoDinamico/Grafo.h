@@ -33,5 +33,6 @@ public:
 	void PrimeroElMejor(string origen, string destino); // Despliega la ruta entre los dos vertices especificados con el algoritmo de primero el mejor
 	void MostrarRutaEncontrada(stack<pair<Vertice*, Vertice*>> pilaPar, Vertice* vdest); // Despliega la ruta encontrada
 	void Dijkstra(string origen); // Despliega la ruta más corta entre el origen y los demás vertices
+	void Kruskal(); // Genera el arbol recubridor minimo con el algoritmo de kruskal
 };
 

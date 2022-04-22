@@ -7,7 +7,38 @@ int main()
 	Grafo* grafo = new Grafo();
 	int opc = 0;
 
+
 	grafo->InsertaVertice("A");
+	grafo->InsertaVertice("B");
+	grafo->InsertaVertice("C");
+	grafo->InsertaVertice("D");
+	grafo->InsertaVertice("E");
+	grafo->InsertaVertice("F");
+	grafo->InsertaVertice("G");
+	grafo->InsertaArista("A", "B", 7);
+	grafo->InsertaArista("A", "D", 5);
+	grafo->InsertaArista("B", "A", 7);
+	grafo->InsertaArista("B", "C", 8);
+	grafo->InsertaArista("B", "D", 9);
+	grafo->InsertaArista("B", "E", 7);
+	grafo->InsertaArista("C", "B", 8);
+	grafo->InsertaArista("C", "E", 5);
+	grafo->InsertaArista("D", "A", 5);
+	grafo->InsertaArista("D", "B", 9);
+	grafo->InsertaArista("D", "E", 15);
+	grafo->InsertaArista("D", "F", 6);
+	grafo->InsertaArista("E", "B", 7);
+	grafo->InsertaArista("E", "C", 5);
+	grafo->InsertaArista("E", "D", 15);
+	grafo->InsertaArista("E", "F", 8);
+	grafo->InsertaArista("E", "G", 9);
+	grafo->InsertaArista("F", "D", 6);
+	grafo->InsertaArista("F", "E", 8);
+	grafo->InsertaArista("F", "G", 11);
+	grafo->InsertaArista("G", "E", 9);
+	grafo->InsertaArista("G", "F", 11);
+
+	/*grafo->InsertaVertice("A");
 	grafo->InsertaVertice("B");
 	grafo->InsertaVertice("C");
 	grafo->InsertaVertice("D");
@@ -33,9 +64,9 @@ int main()
 	grafo->InsertaArista("F", "A", 12);
 	grafo->InsertaArista("F", "B", 8);
 	grafo->InsertaArista("F", "E", 42);
-	grafo->InsertaArista("G", "D", 17);
+	grafo->InsertaArista("G", "D", 17);*/
 
-	while (opc != 14)
+	while (opc != 15)
 	{
 		system("cls");
 		cout << "1. Insertar vertice" << endl;
@@ -51,7 +82,8 @@ int main()
 		cout << "11. Primero en profundidad" << endl;
 		cout << "12. Primero el mejor" << endl;
 		cout << "13. Dijkstra" << endl;
-		cout << "14. Salir" << endl;
+		cout << "14. Kruskal" << endl;
+		cout << "15. Salir" << endl;
 
 		cout << endl;
 		cout << "Ingrese una opcion del menu: ";
@@ -241,6 +273,17 @@ int main()
 				cin >> ori;
 
 				grafo->Dijkstra(ori);
+			}
+
+			break;
+		}
+		case 14:
+		{
+			if (grafo->EstaVacio())
+				cout << "El grafo esta vacio" << endl;
+			else
+			{
+				grafo->Kruskal();
 			}
 
 			break;
