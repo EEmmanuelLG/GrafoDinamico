@@ -1,5 +1,6 @@
 #include "Grafo.h"
 
+
 Grafo::Grafo()
 {
 	primero = NULL;
@@ -749,4 +750,73 @@ void Grafo::Kruskal()
 		}
 	}
 
+}
+
+void Grafo::Prim(string origen)
+{
+	Vertice* vOrigen = ObtenerVertice(origen);
+
+	if (vOrigen == NULL)
+	{
+		cout << "El vertice origen no existe" << endl;
+		return;
+	}
+
+	map<Vertice*, map<Vertice*, int>> matrizady;
+	list<pair<Vertice*, pair<Vertice*, int>>> listaSolucion;
+	unordered_set<Vertice*> visitados;
+
+	Vertice* vi = primero;
+
+	while (vi != NULL)
+	{
+		Vertice* vj = primero;
+
+		while (vj != NULL)
+		{
+			matrizady[vi][vj] = 0;
+			vj = vj->sig;
+		}
+
+		Arista* aj = vi->ari;
+
+		while (aj != NULL)
+		{
+			matrizady[vi][aj->dest] = aj->precio;
+			aj = aj->sig;
+		}
+
+		vi = vi->sig;
+	}
+
+	visitados.insert(vOrigen);
+	int aristas = 1;
+
+	while (aristas < tamano)
+	{
+		Vertice* vMinOrigen, * vMinDestino;
+		int precioMin = numeric_limits<int>::max();
+
+		for (unordered_set<Vertice*>::iterator i = visitados.begin(); i != visitados.end(); i++)
+		{
+			for (map<Vertice*, int>::iterator j = matrizady[*i].begin(); j != matrizady[*i].end(); j++)
+			{
+				if (j->second < precioMin && j->second != 0 && visitados.count(j->first) == 0)
+				{
+					precioMin = j->second;
+					vMinOrigen = *i;
+					vMinDestino = j->first;
+				}
+			}
+		}
+
+		listaSolucion.push_back(pair<Vertice*, pair<Vertice*, int>>(vMinOrigen, pair<Vertice*, int>(vMinDestino, precioMin)));
+		visitados.insert(vMinDestino);
+		aristas++;
+	}
+
+	for (list<pair<Vertice*, pair<Vertice*, int>>>::iterator i = listaSolucion.begin(); i != listaSolucion.end(); i++)
+	{
+		cout << i->first->nombre << " <-> " << i->second.second << " <-> " << i->second.first->nombre << endl;
+	}
 }

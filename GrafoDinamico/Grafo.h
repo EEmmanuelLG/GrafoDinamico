@@ -5,6 +5,7 @@
 #include <list>
 #include <stack>
 #include <map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -34,5 +35,6 @@ public:
 	void MostrarRutaEncontrada(stack<pair<Vertice*, Vertice*>> pilaPar, Vertice* vdest); // Despliega la ruta encontrada
 	void Dijkstra(string origen); // Despliega la ruta más corta entre el origen y los demás vertices
 	void Kruskal(); // Genera el arbol recubridor minimo con el algoritmo de kruskal
+	void Prim(string origen);// Genera el arbol recubridor minimo con el algoritmo de Prim
 };
 

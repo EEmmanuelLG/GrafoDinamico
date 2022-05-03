@@ -66,7 +66,7 @@ int main()
 	grafo->InsertaArista("F", "E", 42);
 	grafo->InsertaArista("G", "D", 17);*/
 
-	while (opc != 15)
+	while (opc != 16)
 	{
 		system("cls");
 		cout << "1. Insertar vertice" << endl;
@@ -83,7 +83,8 @@ int main()
 		cout << "12. Primero el mejor" << endl;
 		cout << "13. Dijkstra" << endl;
 		cout << "14. Kruskal" << endl;
-		cout << "15. Salir" << endl;
+		cout << "15. Prim" << endl;
+		cout << "16. Salir" << endl;
 
 		cout << endl;
 		cout << "Ingrese una opcion del menu: ";
@@ -284,6 +285,21 @@ int main()
 			else
 			{
 				grafo->Kruskal();
+			}
+
+			break;
+		}
+		case 15:
+		{
+			if (grafo->EstaVacio())
+				cout << "El grafo esta vacio" << endl;
+			else
+			{
+				string nombre;
+				cout << "Ingrese el nombre del vertice origen: ";
+				cin >> nombre;
+
+				grafo->Prim(nombre);
 			}
 
 			break;
